@@ -1,5 +1,5 @@
 
-import { Link, useNavigate } from 'react-router-dom';
+// import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 
 import { Box, Button, Card, CardContent, Grid, Typography, useTheme } from '@mui/material';
@@ -21,7 +21,7 @@ const VerifyUser = () => {
     const theme = useTheme();
     const user = useSelector((state: any) => state.user)
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const handleVerify = async (values: any) => {
         try {
 
