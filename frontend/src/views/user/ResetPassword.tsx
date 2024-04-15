@@ -7,6 +7,7 @@ import { Box, Button, Card, CardContent, Grid, Typography, useTheme } from '@mui
 
 import * as Yup from 'yup';
 import CustomTextField from '@/components/Forms/Input/CustomTextField';
+import { API_URL, API_VERSION } from '@/utils/constants';
 
 const resetPasswordSchema = Yup.object({
     password: Yup.string().trim().max(30).required('password is required'),
@@ -26,7 +27,7 @@ const ResetPassword = () => {
     const { resettoken } = useParams();
     const handleUserLogin = async (values: any) => {
         try {
-            const response = await axios.put(`http://localhost:3000/api/v1/resetpassword/${resettoken}`, {
+            const response = await axios.put(`${API_URL}${API_VERSION}/resetpassword/${resettoken}`, {
                 "resettoken":resettoken,
                 "password":values?.password
             });

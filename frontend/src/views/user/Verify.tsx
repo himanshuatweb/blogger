@@ -7,6 +7,7 @@ import CustomTextField from '@/components/Forms/Input/CustomTextField';
 import axios from 'axios';
 import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
+import { API_URL, API_VERSION } from '@/utils/constants';
 
 const userTokenSchema = Yup.object({
     token: Yup.string().max(500).required('code is required'),
@@ -24,7 +25,7 @@ const VerifyUser = () => {
     const handleVerify = async (values: any) => {
         try {
 
-            const res = await axios.post('http://localhost:3000/api/v1/verify', { token: values?.token, email: user?.email });
+            const res = await axios.post(`${API_URL}${API_VERSION}/verify`, { token: values?.token, email: user?.email });
             console.log("Login Response ", res);
         } catch (error) {
             console.error("Error registering user:", error);

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { API_URL, API_VERSION } from '@/utils/constants';
 
 import {
     AppBar,
@@ -55,7 +56,7 @@ export default function Header(props: Props) {
 
     const handleLogout = async () => {
         // Call Logout API Here
-        const res = await axios('http://localhost:3000/api/v1/logout', {
+        const res = await axios(`${API_URL}${API_VERSION}/logout`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${accessToken}`

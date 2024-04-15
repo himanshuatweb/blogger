@@ -8,6 +8,7 @@ import { setUser } from '@/store/slices/UserSlice';
 import UserLoginForm from '@/components/User/UserLoginForm';
 import { loginInitialValue } from '@/components/Forms/initialValue';
 import { userLoginSchema } from '@/components/Forms/validation';
+import { API_URL, API_VERSION } from '@/utils/constants';
 
 const Login = () => {
     const theme = useTheme();
@@ -15,7 +16,7 @@ const Login = () => {
     const navigate = useNavigate();
     const handleUserLogin = async (values: any) => {
         try {
-            const response = await axios.post('http://localhost:3000/api/v1/login', values);
+            const response = await axios.post(`${API_URL}${API_VERSION}/login`, values);
             if (response.data?.success) {
                 
                 dispatch(setUser({

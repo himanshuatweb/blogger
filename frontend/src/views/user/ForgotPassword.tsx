@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import toast from 'react-hot-toast';
-
+import axios from 'axios';
+import * as Yup from 'yup';
 
 import { Box, Button, Card, CardContent, Grid, Typography, useTheme } from '@mui/material';
 import CustomTextField from '@/components/Forms/Input/CustomTextField';
-import axios from 'axios';
-import * as Yup from 'yup';
+import { API_URL, API_VERSION } from '@/utils/constants';
+
 
 const userLoginSchema = Yup.object({
     email: Yup.string().email().max(80).required('email is required'),
@@ -22,7 +23,7 @@ const ForgotPassword = () => {
     const handleForgot = async (values: any) => {
         try {
 
-            const res = await axios.post('http://localhost:3000/api/v1/forgot-password', values);
+            const res = await axios.post(`${API_URL}${API_VERSION}/forgot-password`, values);
             if (res.data?.success) {
                 toast.success('Reset Password Mail Sent Successfully')
                 navigate('/login')

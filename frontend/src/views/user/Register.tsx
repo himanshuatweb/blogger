@@ -9,6 +9,7 @@ import { setUser } from '@/store/slices/UserSlice';
 import UserRegisterForm from '@/components/User/UserRegisterForm';
 import { registerInitialValue } from '@/components/Forms/initialValue';
 import { userRegisterSchema } from '@/components/Forms/validation';
+import { API_URL, API_VERSION } from '@/utils/constants';
 
 
 
@@ -30,7 +31,7 @@ const Register = () => {
             formData.append('userImage', userImage);
 
 
-            const response = await axios.post('http://localhost:3000/api/v1/register', formData, {
+            const response = await axios.post(`${API_URL}${API_VERSION}/register`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
