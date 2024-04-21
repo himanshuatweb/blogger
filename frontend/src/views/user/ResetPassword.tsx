@@ -1,13 +1,12 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
-import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Box, Button, Card, CardContent, Grid, Typography, useTheme } from '@mui/material';
-
-
 import * as Yup from 'yup';
+
 import CustomTextField from '@/components/Forms/Input/CustomTextField';
-import { API_URL, API_VERSION } from '@/utils/constants';
+import { AxiosResponse } from 'axios';
+import api from '@/http/server-base';
 
 const resetPasswordSchema = Yup.object({
     password: Yup.string().trim().max(30).required('password is required'),
@@ -27,10 +26,11 @@ const ResetPassword = () => {
     const { resettoken } = useParams();
     const handleUserLogin = async (values: any) => {
         try {
-            const response = await axios.put(`${API_URL}${API_VERSION}/resetpassword/${resettoken}`, {
+            const response:AxiosResponse = await api.put(`resetpassword/${resettoken}`, {
                 "resettoken":resettoken,
                 "password":values?.password
             });
+            console.log("Response in Resetpassword ",response);
             if (response.data?.success) {
                 toast.success('Password Updated');
                 navigate('/login')

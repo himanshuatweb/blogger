@@ -6,10 +6,9 @@ const initialState: User = {
     email: null,
     userImage: null,
     userType: "user",
-    isVerified:false,
-    isActive:false,
+    isVerified: false,
+    isActive: false,
     isAuthenticated: false,
-    accessToken:null,
 };
 
 export const UserSlice = createSlice({
@@ -24,8 +23,6 @@ export const UserSlice = createSlice({
             state.isAuthenticated = action.payload?.isAuthenticated;
             state.isActive = action.payload?.isActive;
             state.isVerified = action.payload?.isVerified;
-            state.accessToken = action.payload?.accessToken;
-
         },
     },
 });

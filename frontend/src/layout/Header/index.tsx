@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
-import { API_URL, API_VERSION } from '@/utils/constants';
+import { LogoutResponse } from '@/utils/types';
+import api from '@/http/server-base';
 
 import {
     AppBar,
@@ -52,30 +52,25 @@ export default function Header(props: Props) {
 
     const user: User = useSelector((state: any) => state.user)
 
-    const { isAuthenticated, accessToken } = user;
+    const { isAuthenticated } = user;
 
     const handleLogout = async () => {
-        // Call Logout API Here
-        const res = await axios(`${API_URL}${API_VERSION}/logout`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`
-            },
-        });
-        console.log("res ", res);
-        if (res.data) {
-            dispatch(setUser({
-                fullName: null,
-                email: null,
-                userImage: null,
-                isAuthenticated: false,
-                accessToken: null,
-            }))
-            navigate('/login')
-        } else {
+        try {
+            const res = await api.get<LogoutResponse>(`logout`);
+
+            if (res.success) {
+                dispatch(setUser({
+                    fullName: null,
+                    email: null,
+                    userImage: null,
+                    isAuthenticated: false,
+                    accessToken: null,
+                }))
+                navigate('/login')
+            }
+        } catch (error) {
             toast.error('Error in logout')
         }
-
 
     }
 

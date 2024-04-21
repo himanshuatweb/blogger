@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
-import axios from 'axios';
+import { AxiosResponse } from 'axios';
 import toast from 'react-hot-toast';
 import { Box, Button, Card, CardContent, Grid, Typography, useTheme } from '@mui/material';
 
@@ -9,9 +9,7 @@ import { setUser } from '@/store/slices/UserSlice';
 import UserRegisterForm from '@/components/User/UserRegisterForm';
 import { registerInitialValue } from '@/components/Forms/initialValue';
 import { userRegisterSchema } from '@/components/Forms/validation';
-import { API_URL, API_VERSION } from '@/utils/constants';
-
-
+import api from '@/http/server-base';
 
 
 const Register = () => {
@@ -31,23 +29,29 @@ const Register = () => {
             formData.append('userImage', userImage);
 
 
-            const response = await axios.post(`${API_URL}${API_VERSION}/register`, formData, {
+            const response: AxiosResponse = await api.post(`register`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            if (response.data?.success) {
+            if (response.data) {
+
+                api.updateTokens({
+                    "accessToken": response?.data?.accessToken,
+                    "refreshToken": response?.data?.user?.refreshToken
+                })
+
+
                 dispatch(setUser({
-                    fullName: response.data?.data?.user?.fullName,
-                    email: response.data?.data?.user?.email,
-                    userImage: response.data?.data?.user?.userImage,
-                    isActive: response.data?.data?.user?.isActive,
-                    isVerified: response.data?.data?.user?.isVerified,
-                    accessToken: response.data?.data?.accessToken,
+                    fullName: response.data?.user?.fullName,
+                    email: response.data?.user?.email,
+                    userImage: response.data?.user?.userImage,
+                    isActive: response.data?.user?.isActive,
+                    isVerified: response.data?.user?.isVerified,
                     isAuthenticated: true,
                 }))
-                if (response.data?.data?.user?.isVerified) {
-                    if (response.data?.data?.user?.isActive) {
+                if (response.data?.user?.isVerified) {
+                    if (response.data?.user?.isActive) {
                         navigate('/home')
                     } else {
                         navigate('/inactive-user')

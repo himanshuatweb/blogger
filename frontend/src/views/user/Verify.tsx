@@ -1,13 +1,12 @@
-
 // import { Link, useNavigate } from 'react-router-dom';
-import { useFormik } from 'formik';
-
-import { Box, Button, Card, CardContent, Grid, Typography, useTheme } from '@mui/material';
-import CustomTextField from '@/components/Forms/Input/CustomTextField';
-import axios from 'axios';
-import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
-import { API_URL, API_VERSION } from '@/utils/constants';
+import { useFormik } from 'formik';
+import { Box, Button, Card, CardContent, Grid, Typography, useTheme } from '@mui/material';
+import { AxiosResponse } from 'axios';
+import * as Yup from 'yup';
+
+import api from '@/http/server-base';
+import CustomTextField from '@/components/Forms/Input/CustomTextField';
 
 const userTokenSchema = Yup.object({
     token: Yup.string().max(500).required('code is required'),
@@ -25,8 +24,8 @@ const VerifyUser = () => {
     const handleVerify = async (values: any) => {
         try {
 
-            const res = await axios.post(`${API_URL}${API_VERSION}/verify`, { token: values?.token, email: user?.email });
-            console.log("Login Response ", res);
+            const res: AxiosResponse = await api.post(`verify`, { token: values?.token, email: user?.email });
+            console.log("Verify response ", res);
         } catch (error) {
             console.error("Error registering user:", error);
             // Handle error appropriately (e.g., display error message to the user)
@@ -37,7 +36,6 @@ const VerifyUser = () => {
             initialValues: tokenInitialValue,
             validationSchema: userTokenSchema,
             async onSubmit(values) {
-                console.log("Form Values ", values)
                 handleVerify(values)
             },
         });

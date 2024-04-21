@@ -149,7 +149,7 @@ export const userLogin = asyncHandler(async function (req: Request, res: Respons
 
 
     if (accessToken) {
-        const user = await User.findOne({ email }).select('-password -_id -refreshToken')
+        const user = await User.findOne({ email }).select('-password -_id')
 
         const options = {
             httpOnly: true,
