@@ -34,6 +34,7 @@ app.use('/api', limiter);
 import userRoutes from './routes/user.route';
 import authRoutes from './routes/auth.route';
 import uploadRoutes from './routes/upload.route';
+import blogRoutes from './routes/blog.route'
 
 //Mount the routes
 app.get('/', (req: Request, res: Response) => {
@@ -43,6 +44,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/api/v1', authRoutes);
 app.use('/api/v1/upload',uploadRoutes);
 app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/blogs', blogRoutes);
 
 app.all('*', (req, res, next) => {
     res.status(404).send(`Can't find ${req.originalUrl} on this server!`)

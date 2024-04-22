@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import crypto from 'crypto';
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 import { User } from "../models/user.model";
 import asyncHandler from "../utils/asyncHandler";
