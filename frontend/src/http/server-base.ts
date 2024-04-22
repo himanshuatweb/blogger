@@ -1,5 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import { redirect } from "react-router-dom";
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { baseURL } from './config';
 import { Token } from '@/utils/types';
 import { removeAccessAndRefreshToken, setAccessAndRefreshToken } from '@/utils/helperFunction';
@@ -42,9 +41,7 @@ function createCustomAxios() {
 
     // Response interceptor
     axiosInstance.interceptors.response.use(
-        (response) => {
-            return response;
-        },
+        (response: AxiosResponse) => response,
         async (error) => {
             // Check for access token expiration error
             if (error.response && error.response.status === 401) {
@@ -54,22 +51,24 @@ function createCustomAxios() {
                         // Attempt to refresh tokens and get new accessToken and refreshToken
                         const newAccessToken = await refreshTokensAPI();
 
-                        //Now set new accessToken in Headers
-                        error.config.headers.Authorization = `Bearer ${newAccessToken}`
-                        return axiosInstance(error.config)
+                        if (!newAccessToken) {
+
+                            removeAccessAndRefreshToken();
+                            return Promise.reject(error);
+                        } else {
+
+                            //Now set new accessToken in Headers
+                            error.config.headers.Authorization = `Bearer ${newAccessToken}`
+                            return axiosInstance(error.config)
+                        }
+
                     } catch (error) {
                         //Means refreshToken Error (refresh Token Expired)
-                        console.log("Refresh Token Exprired ", error);
                         removeAccessAndRefreshToken();
-                        redirect('/login')
                     }
                 } else {
                     removeAccessAndRefreshToken();
-                    redirect('/login')
                 }
-
-                // Retry the failed request- Not needed this functionality
-                // return axiosInstance(error.config);
             }
             return Promise.reject(error);
         }
@@ -79,22 +78,28 @@ function createCustomAxios() {
     async function refreshTokensAPI() {
         try {
             // Make a request to refresh tokens using refresh token
-
-            const response = await axios.post('/refreshToken', {
+            const response = await axios.post(`${baseURL}refreshTokens`, {
                 refreshToken: tokens?.refreshToken,
             });
-            // Update tokens
-            if (response.data) {
-                //Set accessToken and refreshToken in ls as well as reducer state.
-                // tokens = response.data;
 
+            // Update tokens
+            if (response?.data?.data) {
+                //Set accessToken and refreshToken in ls.
+                setAccessAndRefreshToken(response.data.data)
+                tokens = response.data.data;
+                return response.data.data.accessToken;
             }
-            return response.data;
         } catch (error) {
-            console.error('Failed to refresh tokens', error);
             // Handle token refresh failure
             removeAccessAndRefreshToken();
-            redirect('/login')
+            //Redirect to login page
+            window.location.href = '/login';
+
+            tokens = {
+                accessToken: null,
+                refreshToken: null,
+            };
+            return null;
         }
     }
 

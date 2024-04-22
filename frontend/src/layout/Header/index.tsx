@@ -58,6 +58,7 @@ export default function Header(props: Props) {
         try {
             const res = await api.get<LogoutResponse>(`logout`);
 
+            
             if (res.success) {
                 dispatch(setUser({
                     fullName: null,
@@ -86,8 +87,8 @@ export default function Header(props: Props) {
             <Divider />
             <List>
                 {navItems.map((item) => (
-                    <Link to={item.link}>
-                        <ListItem key={item.link} disablePadding>
+                    <Link key={item.link} to={item.link}>
+                        <ListItem disablePadding>
                             <ListItemButton sx={{ textAlign: 'center' }}>
                                 <ListItemText primary={item.text} />
                             </ListItemButton>

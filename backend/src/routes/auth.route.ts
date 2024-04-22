@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { forgotPassword, logOut, resetPassword, userLogin, userRegister, verifyUser } from "../controllers/auth.controller";
+import { forgotPassword, logOut, refershAccessToken, resetPassword, userLogin, userRegister, verifyUser } from "../controllers/auth.controller";
 import { upload } from "../middlewares/multer.middleware";
 import { multerErrorHandler } from "../middlewares/multerErrorHandler.middleware";
 import protectedRoute from "../middlewares/auth.middleware";
@@ -22,6 +22,9 @@ router.route('/resetpassword/:resettoken')
 
 router.route('/logout')
     .get(protectedRoute, logOut)
+
+router.route('/refreshTokens')
+    .post(refershAccessToken)
 
 
 export default router;
