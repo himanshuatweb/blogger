@@ -1,5 +1,5 @@
 // import { Link, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '@/store/hooks';
 import { useFormik } from 'formik';
 import { Box, Button, Card, CardContent, Grid, Typography, useTheme } from '@mui/material';
 import { AxiosResponse } from 'axios';
@@ -18,7 +18,7 @@ const tokenInitialValue = {
 
 const VerifyUser = () => {
     const theme = useTheme();
-    const user = useSelector((state: any) => state.user)
+    const user = useAppSelector((state) => state.user)
 
     // const navigate = useNavigate();
     const handleVerify = async (values: any) => {

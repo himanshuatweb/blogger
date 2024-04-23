@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '@/store/hooks';
+
 import { useFormik } from 'formik';
 import { AxiosResponse } from 'axios';
 import toast from 'react-hot-toast';
@@ -15,7 +16,7 @@ import api from '@/http/server-base';
 const Register = () => {
     const theme = useTheme();
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const handleRegisterUser = async (values: any) => {
         try {

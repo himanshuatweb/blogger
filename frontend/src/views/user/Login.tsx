@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '@/store/hooks';
 import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Box, Button, Card, CardContent, Grid, Typography, useTheme } from '@mui/material';
@@ -15,7 +15,7 @@ import { LoginResponse } from '@/utils/types';
 
 const Login = () => {
     const theme = useTheme();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const handleUserLogin = async (values: any) => {
         try {

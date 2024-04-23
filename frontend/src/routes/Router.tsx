@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { User } from '@/utils/types';
+import { useAppSelector } from '@/store/hooks';
+
 
 /* ****** Routes *****  */
 import Loadable from '@/layout/Loadable';
@@ -19,8 +19,8 @@ const VerifyUser = Loadable(lazy(() => import('@/views/user/Verify')))
 const ResetPassword = Loadable(lazy(() => import('@/views/user/ResetPassword')))
 const AuthError = Loadable(lazy(() => import('@/views/user/AuthError')));
 
-const AllRoutes = () => {   
-    const user: User = useSelector((state: any) => state.user);
+const AllRoutes = () => {
+    const user = useAppSelector((state) => state.user);
     const { userType, isVerified } = user;
 
     const Router = [

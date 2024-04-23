@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '@/store/hooks';
+
 import { LogoutResponse } from '@/utils/types';
 import api from '@/http/server-base';
 
@@ -22,7 +23,6 @@ import {
 import { FaAlignJustify } from "react-icons/fa";
 import { setUser } from '@/store/slices/UserSlice';
 import toast from 'react-hot-toast';
-import { User } from '@/utils/types';
 
 
 interface Props {
@@ -45,12 +45,12 @@ const navItems = [
 export default function Header(props: Props) {
 
     const navigate = useNavigate();
-    const dispatch = useDispatch()
+    const dispatch =  useAppDispatch()
 
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
-    const user: User = useSelector((state: any) => state.user)
+    const user= useAppSelector((state) => state.user)
 
     const { isAuthenticated } = user;
 

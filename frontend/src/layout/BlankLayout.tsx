@@ -1,5 +1,5 @@
 import { Outlet, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '@/store/hooks';
 import { Container, Box, styled, useTheme } from '@mui/material';
 
 import Footer from '@/layout/Footer'
@@ -13,7 +13,7 @@ const MainWrapper = styled('div')(({ theme }) => ({
 const BlankLayout = () => {
 
     const theme = useTheme();
-    const user = useSelector((state: any) => state.user)
+    const user = useAppSelector((state) => state.user)
 
     const { isAuthenticated, isVerified } = user;
 
