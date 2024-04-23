@@ -2,7 +2,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@/store/hooks';
 
 import { useFormik } from 'formik';
-import { AxiosResponse } from 'axios';
 import toast from 'react-hot-toast';
 import { Box, Button, Card, CardContent, Grid, Typography, useTheme } from '@mui/material';
 
@@ -11,6 +10,8 @@ import UserRegisterForm from '@/components/User/UserRegisterForm';
 import { registerInitialValue } from '@/components/Forms/initialValue';
 import { userRegisterSchema } from '@/components/Forms/validation';
 import api from '@/http/server-base';
+import { ERROR_MSG } from '@/utils/constants';
+import { GenericSuccessResponse, LoginResponse } from '@/utils/types';
 
 
 const Register = () => {
@@ -30,7 +31,7 @@ const Register = () => {
             formData.append('userImage', userImage);
 
 
-            const response: AxiosResponse = await api.post(`register`, formData, {
+            const response: LoginResponse = await api.post(`register`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -65,10 +66,9 @@ const Register = () => {
 
         } catch (error: any) {
             const err = error?.response?.data?.errors?.[0];
-            toast.error(err, {
+            toast.error(err || ERROR_MSG, {
                 position: 'top-right'
             });
-            // Handle error appropriately (e.g., display error message to the user)
         }
     }
 

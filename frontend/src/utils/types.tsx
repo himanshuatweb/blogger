@@ -38,3 +38,11 @@ export type LogoutResponse = {
     success: boolean;
     data: Record<string, unknown>; // Empty object (use Record<string, unknown> for flexibility)
 }
+
+export type GenericSuccessResponse =     {
+    statusCode: number;
+    message: string;
+    success: boolean;
+    data: Record<string, unknown>; // Empty object
+  }
+  

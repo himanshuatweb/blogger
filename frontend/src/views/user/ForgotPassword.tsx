@@ -1,12 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import toast from 'react-hot-toast';
-import axios from 'axios';
 import * as Yup from 'yup';
 
 import { Box, Button, Card, CardContent, Grid, Typography, useTheme } from '@mui/material';
 import CustomTextField from '@/components/Forms/Input/CustomTextField';
-import { API_URL, API_VERSION } from '@/utils/constants';
+import api from '@/http/server-base';
+
+import { ERROR_MSG } from '@/utils/constants';
+import { GenericSuccessResponse } from '@/utils/types';
 
 
 const userLoginSchema = Yup.object({
@@ -23,15 +25,14 @@ const ForgotPassword = () => {
     const handleForgot = async (values: any) => {
         try {
 
-            const res = await axios.post(`${API_URL}${API_VERSION}/forgot-password`, values);
-            if (res.data?.success) {
+            const res: GenericSuccessResponse = await api.post(`forgot-password`, values);
+
+            if (res.success) {
                 toast.success('Reset Password Mail Sent Successfully')
                 navigate('/login')
             }
         } catch (error: any) {
-            console.error("Error registering user:", error);
-            toast.error(error?.response?.data?.errors?.[0])
-            // Handle error appropriately (e.g., display error message to the user)
+            toast.error(error?.response?.data?.errors?.[0] || ERROR_MSG)
         }
     }
     const { values, errors, touched, handleBlur, handleChange, handleSubmit } =

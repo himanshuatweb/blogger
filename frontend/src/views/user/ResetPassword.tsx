@@ -5,8 +5,9 @@ import { Box, Button, Card, CardContent, Grid, Typography, useTheme } from '@mui
 import * as Yup from 'yup';
 
 import CustomTextField from '@/components/Forms/Input/CustomTextField';
-import { AxiosResponse } from 'axios';
 import api from '@/http/server-base';
+import { GenericSuccessResponse } from '@/utils/types';
+import { ERROR_MSG } from '@/utils/constants';
 
 const resetPasswordSchema = Yup.object({
     password: Yup.string().trim().max(30).required('password is required'),
@@ -26,19 +27,18 @@ const ResetPassword = () => {
     const { resettoken } = useParams();
     const handleUserLogin = async (values: any) => {
         try {
-            const response:AxiosResponse = await api.put(`resetpassword/${resettoken}`, {
-                "resettoken":resettoken,
-                "password":values?.password
+            const response: GenericSuccessResponse = await api.put(`resetpassword/${resettoken}`, {
+                "resettoken": resettoken,
+                "password": values?.password
             });
-            console.log("Response in Resetpassword ",response);
-            if (response.data?.success) {
+            console.log("Response in Resetpassword ", response);
+            if (response.success) {
                 toast.success('Password Updated');
                 navigate('/login')
             }
-        } catch (error) {
-            console.error("Error Login user:", error);
-            toast.error('Password Not Updated');
-            // Handle error appropriately (e.g., display error message to the user)
+        } catch (error:any) {
+            console.log("Error Login user:", error);
+            toast.error(error?.response?.data?.errors?.[0] || ERROR_MSG);
         }
     }
     const { values, errors, touched, handleBlur, handleChange, handleSubmit } =

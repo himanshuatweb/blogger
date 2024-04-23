@@ -11,6 +11,7 @@ import { loginInitialValue } from '@/components/Forms/initialValue';
 import { userLoginSchema } from '@/components/Forms/validation';
 import api from '@/http/server-base';
 import { LoginResponse } from '@/utils/types';
+import { ERROR_MSG } from '@/utils/constants';
 
 
 const Login = () => {
@@ -47,9 +48,9 @@ const Login = () => {
                 }
 
             }
-        } catch (error) {
-            console.error("Error Login user:", error);
-            toast.error('Error in Login')
+        } catch (error: any) {
+            const invalidCredError = error?.response?.data?.errors?.[0]
+            toast.error(invalidCredError || ERROR_MSG)
         }
     }
     const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } =

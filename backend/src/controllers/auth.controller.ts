@@ -73,7 +73,7 @@ export const userRegister = asyncHandler(async function (req: Request, res: Resp
     })
 
     const createdUser = await User.findById(user._id).select(
-        '-password -_id -userType '
+        '-password -_id'
     );
 
     if (!createdUser) {
@@ -87,7 +87,7 @@ export const userRegister = asyncHandler(async function (req: Request, res: Resp
     const tokens = await generateAccessAndRefereshTokens(user._id);
     if (tokens) {
 
-        const message = `Yor are receiving this email because you (or someone else) has requested for account creation on Blogger App. Please use this token to cofirm your email valid for 10min only :\n\n ${tokens.refreshToken}`;
+        const message = `Yor are receiving this email because you (or someone else) has requested for account creation on Blogger App. Please use this token to cofirm your email:\n${tokens.refreshToken}`;
 
         const info = await sendEmail({ email: createdUser.email, subject: 'Verify Email', message });
 
@@ -110,7 +110,7 @@ export const userRegister = asyncHandler(async function (req: Request, res: Resp
             .cookie("accessToken", accessToken, options)
             .cookie("refreshToken", refreshToken, options)
             .json(
-                new ApiResponse(201, { "user": createdUser, accessToken }, "User registered successfully")
+                new ApiResponse(201, { "user": { refreshToken, ...createdUser }, accessToken }, "User registered successfully")
             )
     } else {
         // If Not able to send email, then delete user first.
@@ -182,19 +182,19 @@ export const verifyUser = asyncHandler(async function (req: Request, res: Respon
     const isUserExist = await User.findOne({ email });
 
     if (!isUserExist) {
-        throw new ApiError(404, "Invalid Credentials", ['Invalid Credentials'])
+        throw new ApiError(404, "User Not Found", ['User Not Found'])
     }
 
     const isTokenCorrect = (token === isUserExist.refreshToken);
 
     if (!isTokenCorrect) {
-        throw new ApiError(404, "Invalid Credentials", ['Invalid Credentials'])
+        throw new ApiError(404, "Invalid Code", ['Invalid Code'])
     }
 
     isUserExist.isVerified = true;
     await isUserExist.save();
 
-    const user = await User.findOne({ email }).select('-password -refreshToken')
+    const user = await User.findOne({ email }).select('-password')
 
     return res.status(200).json(
         new ApiResponse(200, { user }, "user verified")

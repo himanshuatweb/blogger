@@ -1,12 +1,14 @@
-// import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '@/store/hooks';
 import { useFormik } from 'formik';
 import { Box, Button, Card, CardContent, Grid, Typography, useTheme } from '@mui/material';
-import { AxiosResponse } from 'axios';
+import toast from 'react-hot-toast';
 import * as Yup from 'yup';
 
 import api from '@/http/server-base';
 import CustomTextField from '@/components/Forms/Input/CustomTextField';
+import { GenericSuccessResponse } from '@/utils/types';
+import { ERROR_MSG } from '@/utils/constants';
 
 const userTokenSchema = Yup.object({
     token: Yup.string().max(500).required('code is required'),
@@ -20,15 +22,18 @@ const VerifyUser = () => {
     const theme = useTheme();
     const user = useAppSelector((state) => state.user)
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const handleVerify = async (values: any) => {
         try {
 
-            const res: AxiosResponse = await api.post(`verify`, { token: values?.token, email: user?.email });
-            console.log("Verify response ", res);
-        } catch (error) {
+            const res: GenericSuccessResponse = await api.post(`verify`, { token: values?.token, email: user?.email });
+            if (res.success) {
+                toast.success('Email Verified ! Please Login Again')
+                navigate('/login')
+            }
+        } catch (error: any) {
             console.error("Error registering user:", error);
-            // Handle error appropriately (e.g., display error message to the user)
+            toast.error(error?.response?.data?.errors?.[0] || ERROR_MSG)
         }
     }
     const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
