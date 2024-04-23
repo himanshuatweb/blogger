@@ -39,10 +39,33 @@ export type LogoutResponse = {
     data: Record<string, unknown>; // Empty object (use Record<string, unknown> for flexibility)
 }
 
-export type GenericSuccessResponse =     {
+export type GenericSuccessResponse = {
     statusCode: number;
     message: string;
     success: boolean;
     data: Record<string, unknown>; // Empty object
-  }
-  
+}
+
+export type Blog = {
+    title: string;
+    author: string;
+    blogImage: string;
+    description: string;
+    likes: number;
+    dislikes: number;
+    likedBy: string[];
+    dislikedBy: string[];
+    comments: any[]; // Array of unknown type (can be customized later)
+    _id: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+}
+
+export type BlogResponse = GenericSuccessResponse & {
+    data: {
+        blogs: Blog[];
+        total: number;
+    };
+};
+

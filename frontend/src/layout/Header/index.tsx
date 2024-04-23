@@ -23,6 +23,7 @@ import {
 import { FaAlignJustify } from "react-icons/fa";
 import { setUser } from '@/store/slices/UserSlice';
 import toast from 'react-hot-toast';
+import { removeAccessAndRefreshToken, setAccessAndRefreshToken } from '@/utils/helperFunction';
 
 
 interface Props {
@@ -45,12 +46,12 @@ const navItems = [
 export default function Header(props: Props) {
 
     const navigate = useNavigate();
-    const dispatch =  useAppDispatch()
+    const dispatch = useAppDispatch()
 
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
-    const user= useAppSelector((state) => state.user)
+    const user = useAppSelector((state) => state.user)
 
     const { isAuthenticated } = user;
 
@@ -58,8 +59,8 @@ export default function Header(props: Props) {
         try {
             const res = await api.get<LogoutResponse>(`logout`);
 
-            
             if (res.success) {
+                api.updateTokens({ accessToken: null, refreshToken: null })
                 dispatch(setUser({
                     fullName: null,
                     email: null,
@@ -67,6 +68,7 @@ export default function Header(props: Props) {
                     isAuthenticated: false,
                     accessToken: null,
                 }))
+                removeAccessAndRefreshToken();
                 navigate('/login')
             }
         } catch (error) {

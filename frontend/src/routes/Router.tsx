@@ -19,6 +19,9 @@ const VerifyUser = Loadable(lazy(() => import('@/views/user/Verify')))
 const ResetPassword = Loadable(lazy(() => import('@/views/user/ResetPassword')))
 const AuthError = Loadable(lazy(() => import('@/views/user/AuthError')));
 
+/* ******Blogs**** */
+const MyBlogs = Loadable(lazy(() => import('@/views/blog')))
+
 const AllRoutes = () => {
     const user = useAppSelector((state) => state.user);
     const { userType, isVerified } = user;
@@ -41,6 +44,11 @@ const AllRoutes = () => {
                     path: '/home',
                     exact: true,
                     element: <>Home Component Here UPdated</>,
+                },
+                {
+                    path: '/my-blogs',
+                    exact: true,
+                    element: <MyBlogs />,
                 },
                 { path: '*', element: <>Coming Soon</> },
             ],
