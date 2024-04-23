@@ -23,7 +23,7 @@ app.use(cookieParser());
 
 // Limit requests from same API
 const limiter = rateLimit({
-    max: 100,
+    max: 1000,
     windowMs: 60 * 60 * 1000,
     message: 'Too many requests from this IP, please try again in an hour!'
 });
@@ -42,7 +42,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use('/api/v1', authRoutes);
-app.use('/api/v1/upload',uploadRoutes);
+app.use('/api/v1/upload', uploadRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/blogs', blogRoutes);
 

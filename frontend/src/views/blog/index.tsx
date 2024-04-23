@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import api from '@/http/server-base';
 import { Blog, BlogResponse } from '@/utils/types';
 import { Box } from '@mui/material';
-import Spinner from '@/layout/Spinner/Spinner';
+import { titleize } from '@/utils/helperFunction';
+import CustomLoader from '@/components/common/CustomLoader';
 
 const MyBlogs = () => {
 
@@ -22,7 +23,8 @@ const MyBlogs = () => {
     }, [])
 
     if (loading) {
-        return <Spinner />
+        return <CustomLoader />
+
     }
 
     return (
@@ -30,7 +32,7 @@ const MyBlogs = () => {
             <Box>
                 {blogs?.map((blog) => {
                     return <div key={blog._id}>
-                        <p> {blog.title} </p>
+                        <p> {titleize(blog.title)} </p>
                     </div>
                 })}
             </Box>

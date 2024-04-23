@@ -23,7 +23,7 @@ import {
 import { FaAlignJustify } from "react-icons/fa";
 import { setUser } from '@/store/slices/UserSlice';
 import toast from 'react-hot-toast';
-import { removeAccessAndRefreshToken, setAccessAndRefreshToken } from '@/utils/helperFunction';
+import { removeAccessAndRefreshToken } from '@/utils/helperFunction';
 
 
 interface Props {
