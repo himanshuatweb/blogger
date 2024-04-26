@@ -11,7 +11,7 @@ import { registerInitialValue } from '@/components/Forms/initialValue';
 import { userRegisterSchema } from '@/components/Forms/validation';
 import api from '@/http/server-base';
 import { ERROR_MSG } from '@/utils/constants';
-import { GenericSuccessResponse, LoginResponse } from '@/utils/types';
+import { LoginResponse } from '@/utils/types';
 
 
 const Register = () => {
