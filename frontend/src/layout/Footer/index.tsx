@@ -8,10 +8,14 @@ const Footer = () => {
                     Copyright © {new Date().getFullYear()} Blogger
                 </Typography>
                 <Link href="#" underline="none" color="grey">
-                    Privacy Policy
+                    <Typography variant="body2" color="text.secondary">
+                        Privacy Policy
+                    </Typography>
                 </Link>
                 <Link href="#" underline="none" color="grey">
-                    Terms of Use
+                    <Typography variant="body2" color="text.secondary">
+                        Terms of Use
+                    </Typography>
                 </Link>
             </Stack>
         </Box>

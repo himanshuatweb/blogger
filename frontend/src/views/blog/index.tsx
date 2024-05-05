@@ -7,7 +7,7 @@ import { getBlogs } from '@/http/helperFunction';
 const queryKey = ['my-blogs'];
 
 const MyBlogs = () => {
-    const { data: blogs, isLoading } = useQuery({
+    const { data: blogs, isLoading, refetch } = useQuery({
         queryKey: queryKey,
         queryFn: getBlogs,
     })
@@ -19,7 +19,7 @@ const MyBlogs = () => {
     return (
         <Grid container spacing={2} my={1}>
             {blogs?.map((blog) => {
-                return <BlogCard key={blog._id} blog={blog} />
+                return <BlogCard key={blog._id} blog={blog} refetch={refetch} />
             })}
         </Grid>
     )

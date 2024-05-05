@@ -1,18 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { Button, Grid } from '@mui/material';
+import { FaTrash } from "react-icons/fa";
+import { Box, Button, Grid, CardContent, Card, CardMedia, Typography, IconButton } from '@mui/material';
+import toast from 'react-hot-toast';
+import DeleteModal from '@/components/common/DeleteModal';
+import api from '@/http/server-base';
 import { Blog } from '@/utils/types';
+import { ERROR_MSG } from '@/utils/constants';
 
 interface BlogProps {
-    blog: Blog
+    blog: Blog,
+    refetch: () => void,
 }
 
-const BlogCard: React.FC<BlogProps> = ({ blog }) => {
+const BlogCard: React.FC<BlogProps> = ({ blog, refetch }) => {
     const navigate = useNavigate();
+    const [open, setOpen] = useState(false)
+    const [isDeleting, setisDeleting] = useState(false)
+
+    const handleDelete = async () => {
+        try {
+            setisDeleting(true)
+            await api.del(`blogs/${blog._id}`)
+            toast.success('Blog Deleted Successfully !', { position: 'top-center' })
+            refetch();
+
+        } catch (error: any) {
+            const err = error?.response?.data?.errors?.[0];
+            toast.error(err || ERROR_MSG, {
+                position: 'top-right'
+            });
+        }
+        finally {
+            setisDeleting(false)
+        }
+    }
+
     return (
         <Grid item xs={12} md={4} lg={3} >
             <Card raised sx={{ maxWidth: 600, borderRadius: 4 }}>
@@ -32,16 +55,37 @@ const BlogCard: React.FC<BlogProps> = ({ blog }) => {
                     <Typography variant="body2" color="text.secondary">
                         Author: {blog.author}
                     </Typography>
-                    <Button
-                        onClick={() => navigate(`/my-blogs/${blog.title}`, { state: blog })}
-                        variant="contained"
-                        color="primary"
-                        sx={{ mt: 2 }}
+                    <Box sx={{
+                        display: "flex",
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                    }}
                     >
-                        Read More
-                    </Button>
+                        <Button
+                            onClick={() => navigate(`/my-blogs/${blog.title}`, { state: blog })}
+                            variant="contained"
+                            color="primary"
+                            sx={{ mt: 2 }}
+                        >
+                            Read More
+                        </Button>
+                        <IconButton
+                            aria-label="delete"
+                            onClick={() => { setOpen(true) }}
+                        >
+                            <FaTrash size={20} color='red' />
+                        </IconButton>
+                    </Box>
                 </CardContent>
             </Card>
+            <DeleteModal
+                open={open}
+                handleClose={() => { setOpen(false) }}
+                handleDelete={handleDelete}
+                title="Delete Blog"
+                description="Are you sure you want to delete this blog !"
+                isDeleting={isDeleting}
+            />
         </Grid>
     );
 };
