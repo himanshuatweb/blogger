@@ -22,6 +22,7 @@ const AuthError = Loadable(lazy(() => import('@/views/user/AuthError')));
 /* ******Blogs**** */
 const MyBlogs = Loadable(lazy(() => import('@/views/blog')))
 const SingleBlog = Loadable(lazy(() => import('@/views/blog/SingleBlog')))
+const CreateBlog = Loadable(lazy(() => import('@/views/blog/CreateBlog')))
 
 const AllRoutes = () => {
     const user = useAppSelector((state) => state.user);
@@ -50,6 +51,11 @@ const AllRoutes = () => {
                     path: '/my-blogs',
                     exact: true,
                     element: <MyBlogs />,
+                },
+                {
+                    path: '/create-blog',
+                    exact: true,
+                    element: <CreateBlog />,
                 },
                 {
                     path: '/my-blogs/:singleblog',

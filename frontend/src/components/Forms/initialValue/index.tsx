@@ -11,3 +11,9 @@ export const registerInitialValue = {
     confirmPassword: '',
     userImage: null,
 }
+
+export const blogInitialValue = {
+    title: '',
+    description: '',
+    blogImage: null,
+}

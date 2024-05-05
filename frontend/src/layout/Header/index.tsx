@@ -40,6 +40,10 @@ const navItems = [
         text: 'My Blogs',
         link: '/my-blogs'
     },
+    {
+        text: 'Create Blog',
+        link: 'create-blog'
+    }
 
 ];
 

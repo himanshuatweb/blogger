@@ -17,7 +17,7 @@ const MyBlogs = () => {
     }
 
     return (
-        <Grid container spacing={2} mt={1}>
+        <Grid container spacing={2} my={1}>
             {blogs?.map((blog) => {
                 return <BlogCard key={blog._id} blog={blog} />
             })}

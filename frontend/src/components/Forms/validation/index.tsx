@@ -25,3 +25,17 @@ export const userRegisterSchema = Yup.object({
         ),
 });
 
+export const blogSchema = Yup.object({
+    title: Yup.string().max(150).required('blog title is required'),
+    description: Yup.string().max(1500).required('blog description is required'),
+    blogImage: Yup.mixed()
+        .required('blog image is required')
+        .test(
+            'fileFormat',
+            'Invalid file format. Only images are allowed',
+            (value: any) => {
+                return value && ['image/jpeg', 'image/jpg', 'image/png'].includes(value.type);
+            }
+        )
+});
+

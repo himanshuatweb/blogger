@@ -69,3 +69,12 @@ export type BlogResponse = GenericSuccessResponse & {
     };
 };
 
+export type BlogCreateResponse = {
+    statusCode: number;
+    message: string;
+    success: boolean;
+    data: {
+        blog: Blog;
+    };
+}
+
